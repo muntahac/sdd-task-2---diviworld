@@ -7,7 +7,7 @@ import tkinter as tk
 from tkinter import *
 import tkinter.font as tkFont
 from tkinter import messagebox 
-
+import random
 
 
 
@@ -15,6 +15,12 @@ from tkinter import messagebox
 root = Tk()
 root.title("DiviWorld")
 root.geometry("1150x700") 
+
+# initialising variables
+num_questions = 10
+current_question = 1
+correct_answers = 0
+questions = []
 
 def show_main_frame():
     questions_frame.pack_forget()
@@ -28,10 +34,20 @@ def show_instructions():
     instructions_label.config()
     instructions_list.config()
     
-    # messagebox.showinfo("DiviWorld Instructions", instructions)
-    # show_questions()
+def generate_questions():
+    global questions
+    questions = []
+    for i in range(1, num_questions + 1):
+        b = random.randint(1, 10)
+        max_a = 100
+        max_multiplier = max_a // b
+        multiplier = random.randint(1, max_multiplier)
+        a = b * multiplier
+        correct_answer = a / b
+        questions.append((a, b, correct_answer))
 
 def show_questions():
+    global current_question
     main_frame.pack_forget()
     instructions_frame.pack_forget()
     question_frame.pack(fill='both', expand=True)
@@ -39,13 +55,39 @@ def show_questions():
     question_label.config(text="Question 1: What is 10 ÷ 2?")
     answer_entry.delete(0, tk.END)
     
-def ok_button():
-    instructions_frame.pack_forget()
-    main_frame.pack_forget()
-    question_frame.pack(fill='both', expand=True)
+    correct_answers = 0
+    current_question = 1
+    generate_questions()
+    display_question()
     
-    question_label.config(text="Question 1: What is 10 ÷ 2?")
-    answer_entry.delete(0, tk.END)
+def display_question():
+    global current_question
+    if current_question <= num_questions:
+        a, b, _ = questions[current_question - 1]
+        question_label.config(text=f"Question {current_question}: What is {a} ÷ {b}?")
+        answer_entry.delete(0, tk.END)
+    else:
+        show_results()
+        
+def check_answer():
+    global current_question, correct_answers
+    try:
+        user_answer = int(answer_entry.get())
+        _, _, correct_answer = questions[current_question - 1]
+        if user_answer == correct_answer:
+            correct_answers += 1
+        current_question += 1
+        display_question()
+    except ValueError:
+        messagebox.showerror("Invalid input", "Please enter a valid number.")
+        
+def show_results():
+    question_frame.pack_forget()
+    results_frame.pack(fill='both', expand=True)
+    results_label.config(text=f"You got {correct_answers} out of {num_questions} correct!")
+    
+def ok_button():
+    show_questions()
 
 # creating font objects
 fontobj1 = tkFont.Font(family="Comic Sans MS", size=25, weight="bold")
@@ -79,6 +121,9 @@ question_label.pack(pady=20)
 answer_entry = tk.Entry(question_frame, font=("Comic Sans MS", 15))
 answer_entry.pack(pady=20)
 
+submit_button = Button(question_frame, text="Submit", font=fontobj1, command=check_answer)
+submit_button.pack(pady=20)
+
 
 
 
@@ -105,23 +150,22 @@ instructions_list.pack(padx=20, pady=20)
 ok_button = Button(instructions_frame, text="OK", font=fontobj2, command=ok_button)
 ok_button.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)
 
-# instructions_list = Label(instructions_frame, text="1. First, calculate your answer to the question displayed. \n2. Click the 'Submit' button." )
+
+# creating a frame to show results
+results_frame = tk.Frame(root)
+
+results_label = Label(results_frame, text="", font=fontobj1)
+results_label.pack(pady=20)
+
+restart_button = Button(results_frame, text="Restart", font=fontobj1, command=show_main_frame)
+restart_button.pack(pady=20)
+
+check_answer
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#  quit button
+quit_button = Button(root, text="Quit", font=fontobj1, command=root.destroy)
+quit_button.pack(side=tk.BOTTOM, anchor=tk.SE, padx=5, pady=5)
 
 
 

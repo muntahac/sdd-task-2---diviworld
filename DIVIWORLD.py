@@ -50,10 +50,11 @@ def show_questions():
     global current_question
     main_frame.pack_forget()
     instructions_frame.pack_forget()
+    feedback_frame.pack_forget()
     question_frame.pack(fill='both', expand=True)
 
-    question_label.config(text="Question 1: What is 10 ÷ 2?")
-    answer_entry.delete(0, tk.END)
+    # question_label.config(text="Question 1: What is 10 ÷ 2?")
+    # answer_entry.delete(0, tk.END)
     
     correct_answers = 0
     current_question = 1
@@ -76,11 +77,43 @@ def check_answer():
         _, _, correct_answer = questions[current_question - 1]
         if user_answer == correct_answer:
             correct_answers += 1
-        current_question += 1
-        display_question()
+            show_feedback(True)
+        else:
+            show_feedback(False)
     except ValueError:
         messagebox.showerror("Invalid input", "Please enter a valid number.")
         
+# def check_answer():
+#     global current_question, correct_answers
+#     try:
+#         user_answer = int(answer_entry.get())
+#         _, _, correct_answer = questions[current_question - 1]
+#         if user_answer == correct_answer:
+#             correct_answers += 1
+#             show_feedback(True)
+#         current_question += 1
+#         display_question()
+#         else:
+#             show_feedback(False)
+#     except ValueError:
+#         messagebox.showerror("Invalid input", "Please enter a valid number.")
+        
+def show_feedback(is_correct):
+    question_frame.pack_forget()
+    feedback_frame.pack(fill='both', expand=True)
+    if is_correct:
+        feedback_label.config(text="Correct!")
+    else:
+        feedback_label.config(text="Incorrect!")
+    root.after(1000, next_question)
+    
+def next_question():
+    global current_question
+    current_question += 1
+    display_question()
+    feedback_frame.pack_forget()
+    question_frame.pack(fill='both', expand=True)
+
 def show_results():
     question_frame.pack_forget()
     results_frame.pack(fill='both', expand=True)
@@ -160,7 +193,12 @@ results_label.pack(pady=20)
 restart_button = Button(results_frame, text="Restart", font=fontobj1, command=show_main_frame)
 restart_button.pack(pady=20)
 
-check_answer
+
+# creating a frame for feedback from each question
+feedback_frame = tk.Frame(root)
+
+feedback_label = Label(feedback_frame, text="", font=fontobj1)
+feedback_label.pack(pady=20)
 
 
 #  quit button

@@ -43,7 +43,7 @@ def generate_questions():
         max_multiplier = max_a // b
         multiplier = random.randint(1, max_multiplier)
         a = b * multiplier
-        correct_answer = a / b
+        correct_answer = a // b
         questions.append((a, b, correct_answer))
 
 def show_questions():
@@ -52,9 +52,6 @@ def show_questions():
     instructions_frame.pack_forget()
     feedback_frame.pack_forget()
     question_frame.pack(fill='both', expand=True)
-
-    # question_label.config(text="Question 1: What is 10 ÷ 2?")
-    # answer_entry.delete(0, tk.END)
     
     correct_answers = 0
     current_question = 1
@@ -83,21 +80,6 @@ def check_answer():
     except ValueError:
         messagebox.showerror("Invalid input", "Please enter a valid number.")
         
-# def check_answer():
-#     global current_question, correct_answers
-#     try:
-#         user_answer = int(answer_entry.get())
-#         _, _, correct_answer = questions[current_question - 1]
-#         if user_answer == correct_answer:
-#             correct_answers += 1
-#             show_feedback(True)
-#         current_question += 1
-#         display_question()
-#         else:
-#             show_feedback(False)
-#     except ValueError:
-#         messagebox.showerror("Invalid input", "Please enter a valid number.")
-        
 def show_feedback(is_correct):
     question_frame.pack_forget()
     feedback_frame.pack(fill='both', expand=True)
@@ -108,11 +90,14 @@ def show_feedback(is_correct):
     root.after(1000, next_question)
     
 def next_question():
-    global current_question
-    current_question += 1
-    display_question()
-    feedback_frame.pack_forget()
-    question_frame.pack(fill='both', expand=True)
+   global current_question
+   current_question += 1
+   if current_question > num_questions:
+        show_results()
+   else:
+        display_question()
+        feedback_frame.pack_forget()
+        question_frame.pack(fill='both', expand=True)
 
 def show_results():
     question_frame.pack_forget()
@@ -181,7 +166,7 @@ instructions_list = Label(instructions_frame, text=
 instructions_list.pack(padx=20, pady=20)
 
 ok_button = Button(instructions_frame, text="OK", font=fontobj2, command=ok_button)
-ok_button.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)
+ok_button.place(relx=1.0, rely=1.0, anchor='se', x=-200, y=-60)
 
 
 # creating a frame to show results
@@ -199,6 +184,9 @@ feedback_frame = tk.Frame(root)
 
 feedback_label = Label(feedback_frame, text="", font=fontobj1)
 feedback_label.pack(pady=20)
+
+# proceed and back button
+proceed_button = Button(feedback_frame, text="Proceed", font=fontobj1, command=next_question) 
 
 
 #  quit button

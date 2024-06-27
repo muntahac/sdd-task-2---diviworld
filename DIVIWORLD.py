@@ -2,7 +2,7 @@
 
 # Muntaha Chowdhury 12SDD2
 
-
+import customtkinter
 import tkinter as tk
 from tkinter import *
 import tkinter.font as tkFont
@@ -13,7 +13,7 @@ import random
 
 
 # setting up a window
-root = Tk()
+root = CTk()
 root.resizable(0, 0)
 root.title("DiviWorld")
 root.geometry("750x600") 
@@ -35,12 +35,14 @@ def show_main_frame():
     results_frame.pack_forget()
     main_frame.pack(side='top', fill='both', expand=True)
 
-
+# this function hides the other frames and only displays the instruction frame
 def show_instructions():
     main_frame.pack_forget()
     question_frame.pack_forget()
     instructions_frame.pack(side='top', fill='both', expand=True)
     
+    
+# this function generates a random dividend between 1-100 and a random divisor between 1-10
 def generate_questions():
     global questions
     questions = []
@@ -52,6 +54,7 @@ def generate_questions():
         a = b * multiplier
         correct_answer = a // b
         questions.append((a, b, correct_answer))
+
 
 def show_questions():
     global current_question, correct_answers, question_history
@@ -201,31 +204,31 @@ theme_colors = {
 
 
 # creating the main frame, which includes welcome messages
-main_frame = tk.Frame(root)
+main_frame = Ctk.Frame(root)
 main_frame.pack(pady=20, fill="both", expand=True)
 
 # the welcome messages on the main frame
-welcome_label_1 = Label(main_frame, text="Welcome to DiviWorld!")
+welcome_label_1 = CtkLabel(main_frame, text="Welcome to DiviWorld!")
 welcome_label_1.pack(pady=20)
 
-welcome_label_2 = Label(main_frame, text="Ready to amaze the world with your division skills? ʕ •`ᴥ•´ʔ")
+welcome_label_2 = CtkLabel(main_frame, text="Ready to amaze the world with your division skills? ʕ •`ᴥ•´ʔ")
 welcome_label_2.pack(pady=20)
 
-welcome_label_3 = Label(main_frame, text="Click on the Bear to view instructions!")
+welcome_label_3 = CtkLabel(main_frame, text="Click on the Bear to view instructions!")
 welcome_label_3.pack(pady=20)
 
-instructions_button = Button(main_frame, text="🐻", command=show_instructions)
+instructions_button = CtkButton(main_frame, text="🐻", command=show_instructions)
 instructions_button.pack(pady=150)
 
 # creating a frame to view instructions
 
-instructions_frame = tk.Frame(root)
+instructions_frame = Ctk.Frame(root)
 instructions_frame.pack(pady=20)
 
-instructions_label = Label(instructions_frame, text="Instructions:")
+instructions_label = CtkLabel(instructions_frame, text="Instructions:")
 instructions_label.pack(pady=20)
 
-instructions_list = Label(instructions_frame, text=
+instructions_list = CtkLabel(instructions_frame, text=
     "1. You will be presented with 10 division questions.\n"
     "2. Enter your answer in the text box.\n"
     "3. Click the 'Submit' button to submit your answer.\n"
@@ -239,27 +242,27 @@ instructions_list.pack(padx=20, pady=20)
 
 
 # ok button to proceed to first question
-ok_button = Button(instructions_frame, text="OK", command=ok_button)
+ok_button = CtkButton(instructions_frame, text="OK", command=ok_button)
 ok_button.pack(pady=20)
 
 
 #creating a frame for questions and answers
 question_frame = tk.Frame(root)
 
-question_label = tk.Label(question_frame, text="")
+question_label = Ctktk.Label(question_frame, text="")
 question_label.pack(pady=20)
 
-answer_entry = tk.Entry(question_frame)
+answer_entry = CtkEntry(question_frame)
 answer_entry.pack(pady=20)
 
-submit_button = Button(question_frame, text="Submit", command=check_answer)
+submit_button = CtkButton(question_frame, text="Submit", command=check_answer)
 submit_button.pack(pady=20)
 
 
 # creating a frame for feedback from each question
-feedback_frame = tk.Frame(root)
+feedback_frame = CtkFrame(root)
 
-feedback_label = Label(feedback_frame, text="")
+feedback_label = CtkLabel(feedback_frame, text="")
 feedback_label.pack(pady=20)
 
 
@@ -272,22 +275,23 @@ back_button.pack(pady=20)
 
 
 # creating a frame to show results
-results_frame = tk.Frame(root)
+results_frame = CtkFrame(root)
 
-results_label = Label(results_frame, text="")
+results_label = CtkLabel(results_frame, text="")
 results_label.pack(pady=20)
 
-restart_button = Button(results_frame, text="Back to Home", command=show_main_frame)
+restart_button = CtkButton(results_frame, text="Back to Home", command=show_main_frame)
 restart_button.pack(pady=20)
 
 
 
 #  quit button
-quit_button = Button(root, text="Quit", command=root.destroy)
+quit_button = CtkButton(root, text="Quit", command=root.destroy)
 quit_button.pack(side=tk.BOTTOM, anchor=tk.SE, padx=5, pady=5)
 
 # list of widgets to configure
-widgets_to_configure = [main_frame, 
+widgets_to_configure = [root, 
+                        main_frame, 
                         welcome_label_1, 
                         welcome_label_2, 
                         welcome_label_3, 

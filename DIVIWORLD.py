@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
-
 # Muntaha Chowdhury 12SDD2
 
-import customtkinter
+
 import tkinter as tk
 from tkinter import *
 import tkinter.font as tkFont
@@ -13,10 +11,11 @@ import random
 
 
 # setting up a window
-root = CTk()
+root = Tk()
 root.resizable(0, 0)
 root.title("DiviWorld")
 root.geometry("750x600") 
+
 
 # initialising variables
 num_questions = 10
@@ -24,8 +23,21 @@ current_question = 1
 correct_answers = 0
 questions = []
 question_history = []
-text_size = 16
+text_size = 12
 font_name = "Comic Sans MS"
+
+def set_text_size(size):
+    global text_size
+    text_size = size
+    for widget in widgets_to_configure:
+        try:
+            current_font = widget.cget("font")
+            font_family = current_font.split()[0]
+            widget.config(font=(font_family, text_size))
+        except tk.TclError:
+            pass
+        
+ 
 
 # this function hides other frames and only displays the main frame (welcome page)
 def show_main_frame():
@@ -159,6 +171,8 @@ def change_theme(theme_name):
                 widget.config(bg=theme["bg"], fg=theme["fg"])
             except tk.TclError:
                 pass
+        for frame in frames_to_configure:
+            frame.config(bg=theme["bg"])
         root.config(bg=theme["bg"])
 
 def create_menu(root):
@@ -193,42 +207,42 @@ def create_menu(root):
 
 # defining theme colors
 theme_colors = {
-    "Default": {"bg": "white", "fg": "black"},
+    "Default": {"bg": "#F8C8DC", "fg": "#770737"},
     "Dark": {"bg": "black", "fg": "white"},
     "High Contrast": {"bg": "purple", "fg": "yellow"},
     "Blue": {"bg": "#7393B3", "fg": "#00008B"},
-    "Pink": {"bg":"#F8C8DC", "fg":"#770737"}
+    "Light": {"bg":"white", "fg":"black"}
     
 }
 
 
 
 # creating the main frame, which includes welcome messages
-main_frame = Ctk.Frame(root)
+main_frame = tk.Frame(root)
 main_frame.pack(pady=20, fill="both", expand=True)
 
 # the welcome messages on the main frame
-welcome_label_1 = CtkLabel(main_frame, text="Welcome to DiviWorld!")
+welcome_label_1 = Label(main_frame, text="Welcome to DiviWorld!")
 welcome_label_1.pack(pady=20)
 
-welcome_label_2 = CtkLabel(main_frame, text="Ready to amaze the world with your division skills? ʕ •`ᴥ•´ʔ")
+welcome_label_2 = Label(main_frame, text="Ready to amaze the world with your division skills? ʕ •`ᴥ•´ʔ")
 welcome_label_2.pack(pady=20)
 
-welcome_label_3 = CtkLabel(main_frame, text="Click on the Bear to view instructions!")
+welcome_label_3 = Label(main_frame, text="Click on the Bear to view instructions!")
 welcome_label_3.pack(pady=20)
 
-instructions_button = CtkButton(main_frame, text="🐻", command=show_instructions)
+instructions_button = Button(main_frame, text="🐻", command=show_instructions)
 instructions_button.pack(pady=150)
 
 # creating a frame to view instructions
 
-instructions_frame = Ctk.Frame(root)
+instructions_frame = tk.Frame(root)
 instructions_frame.pack(pady=20)
 
-instructions_label = CtkLabel(instructions_frame, text="Instructions:")
+instructions_label = Label(instructions_frame, text="Instructions:")
 instructions_label.pack(pady=20)
 
-instructions_list = CtkLabel(instructions_frame, text=
+instructions_list = Label(instructions_frame, text=
     "1. You will be presented with 10 division questions.\n"
     "2. Enter your answer in the text box.\n"
     "3. Click the 'Submit' button to submit your answer.\n"
@@ -242,27 +256,27 @@ instructions_list.pack(padx=20, pady=20)
 
 
 # ok button to proceed to first question
-ok_button = CtkButton(instructions_frame, text="OK", command=ok_button)
+ok_button = Button(instructions_frame, text="OK", command=ok_button)
 ok_button.pack(pady=20)
 
 
 #creating a frame for questions and answers
 question_frame = tk.Frame(root)
 
-question_label = Ctktk.Label(question_frame, text="")
+question_label = tk.Label(question_frame, text="")
 question_label.pack(pady=20)
 
-answer_entry = CtkEntry(question_frame)
+answer_entry = tk.Entry(question_frame)
 answer_entry.pack(pady=20)
 
-submit_button = CtkButton(question_frame, text="Submit", command=check_answer)
+submit_button = Button(question_frame, text="Submit", command=check_answer)
 submit_button.pack(pady=20)
 
 
 # creating a frame for feedback from each question
-feedback_frame = CtkFrame(root)
+feedback_frame = tk.Frame(root)
 
-feedback_label = CtkLabel(feedback_frame, text="")
+feedback_label = Label(feedback_frame, text="")
 feedback_label.pack(pady=20)
 
 
@@ -275,18 +289,18 @@ back_button.pack(pady=20)
 
 
 # creating a frame to show results
-results_frame = CtkFrame(root)
+results_frame = tk.Frame(root)
 
-results_label = CtkLabel(results_frame, text="")
+results_label = Label(results_frame, text="")
 results_label.pack(pady=20)
 
-restart_button = CtkButton(results_frame, text="Back to Home", command=show_main_frame)
+restart_button = Button(results_frame, text="Back to Home", command=show_main_frame)
 restart_button.pack(pady=20)
 
 
 
 #  quit button
-quit_button = CtkButton(root, text="Quit", command=root.destroy)
+quit_button = Button(root, text="Quit", command=root.destroy)
 quit_button.pack(side=tk.BOTTOM, anchor=tk.SE, padx=5, pady=5)
 
 # list of widgets to configure
@@ -314,8 +328,33 @@ widgets_to_configure = [root,
                         quit_button
                         ]
 
+# list of frames to configure
+frames_to_configure = [
+    main_frame,
+    instructions_frame,
+    question_frame,
+    feedback_frame,
+    results_frame
+]
 
+widgets_to_configure_for_fonts = [welcome_label_1, 
+                                  welcome_label_2, 
+                                   welcome_label_3, 
+                                   instructions_label, 
+                                   feedback_label, 
+                                   results_label, 
+                                  instructions_button, 
+                                  ok_button, 
+                                  submit_button, 
+                                  proceed_button, 
+                                  back_button, 
+                                  restart_button, 
+                                  quit_button,
+                                  answer_entry
+    ]
 
+for widget in widgets_to_configure_for_fonts:
+    widget.config(font=(font_name, text_size))
 
 create_menu(root)
 

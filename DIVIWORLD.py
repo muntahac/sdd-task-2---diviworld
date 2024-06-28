@@ -176,14 +176,14 @@ def change_theme(theme_name):
         root.config(bg=theme["bg"])
 
 def create_menu(root):
-    menu_bar = tk.Menu(root)
+    menu_bar = tk.Menu(root, bg="#C71585", fg="white")
     root.config(menu=menu_bar)
     
-    parent_menu = tk.Menu(menu_bar, tearoff=0)
+    parent_menu = tk.Menu(menu_bar, tearoff=0, bg="#C71585", fg="white")
     menu_bar.add_cascade(label="Edit", menu=parent_menu)
     
     # Text size submenu
-    text_size_menu = tk.Menu(parent_menu, tearoff=0)
+    text_size_menu = tk.Menu(parent_menu, tearoff=0, bg="#C71585", fg="white")
     parent_menu.add_cascade(label="Text Size", menu=text_size_menu)
     
     text_sizes = [10, 12, 14, 16, 18, 20]  
@@ -191,7 +191,7 @@ def create_menu(root):
         text_size_menu.add_command(label=str(size), command=lambda size=size: set_text_size(size))
          
     # Font submenu
-    font_menu = tk.Menu(parent_menu, tearoff=0)
+    font_menu = tk.Menu(parent_menu, tearoff=0, bg="#C71585", fg="white")
     parent_menu.add_cascade(label="Font", menu=font_menu)
    
     font_families = tkFont.families()
@@ -199,7 +199,7 @@ def create_menu(root):
         font_menu.add_command(label=font_family, command=lambda font_family=font_family: change_font(font_family))
         
     # Theme submenu
-    theme_menu = tk.Menu(parent_menu, tearoff=0)
+    theme_menu = tk.Menu(parent_menu, tearoff=0, bg="#C71585", fg="white")
     parent_menu.add_cascade(label="Themes", menu=theme_menu)
    
     for theme_name in theme_colors:
@@ -337,6 +337,7 @@ frames_to_configure = [
     results_frame
 ]
 
+# configuring widgets for fonts
 widgets_to_configure_for_fonts = [welcome_label_1, 
                                   welcome_label_2, 
                                    welcome_label_3, 
@@ -355,6 +356,8 @@ widgets_to_configure_for_fonts = [welcome_label_1,
 
 for widget in widgets_to_configure_for_fonts:
     widget.config(font=(font_name, text_size))
+    
+change_theme("Default")
 
 create_menu(root)
 
